@@ -1,0 +1,27 @@
+name: Scheduled Report Generator
+
+on:
+  schedule:
+    - cron: '0 0 * * *'   # Runs every day at midnight (UTC)
+  workflow_dispatch:      # Allows manual run
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate report
+        run: |
+          echo "Daily Report" > report.txt
+          echo "Date: $(date)" >> report.txt
+          echo "Repository: ${{ github.repository }}" >> report.txt
+          echo "Automation is working!" >> report.txt
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-report
+          path: report.txt
